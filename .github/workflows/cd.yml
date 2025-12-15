@@ -1,10 +1,13 @@
 name: CD - Deploy to ECS using Terraform
 
 on:
-  workflow_run:
-    workflows: ["CI - Build & Push Strapi Image to ECR"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
+    paths:
+      - "terraform/**"
+      - ".github/workflows/cd.yml"
+
   workflow_dispatch:
 
 env:
@@ -44,13 +47,10 @@ jobs:
 
       - name: Terraform Plan
         working-directory: ./terraform
-        run: |
-          terraform plan \
-            -var="image_uri=${IMAGE_URI}"
+        run: terraform plan -var="image_uri=${IMAGE_URI}"
 
       - name: Terraform Apply
         working-directory: ./terraform
-        run: |
-          terraform apply -auto-approve \
-            -var="image_uri=${IMAGE_URI}"
+        run: terraform apply -auto-approve -var="image_uri=${IMAGE_URI}"
+
 
