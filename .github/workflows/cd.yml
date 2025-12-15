@@ -57,7 +57,7 @@ jobs:
             IMAGE_TAG="${{ github.sha }}"
           fi
 
-          echo "IMAGE_URI=301782007642.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_ENV
+          echo "IMAGE_URI=301782007642.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest" >> $GITHUB_ENV
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
