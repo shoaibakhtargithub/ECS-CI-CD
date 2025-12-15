@@ -1,5 +1,3 @@
-
-
 resource "aws_ecs_task_definition" "this" {
   family                   = "strapi-task"
   requires_compatibilities = ["FARGATE"]
@@ -29,17 +27,16 @@ resource "aws_ecs_task_definition" "this" {
         { name = "DATABASE_PORT", value = "5432" },
         { name = "DATABASE_NAME", value = var.db_name },
         { name = "DATABASE_USERNAME", value = var.db_username },
-        { name = "DATABASE_PASSWORD", value = var.db_password }
+        { name = "DATABASE_PASSWORD", value = var.db_password },
+        # Strapi admin JWT secret to fix "Missing admin.auth.secret configuration"
+        { name = "ADMIN_JWT_SECRET", value = "changeme-super-secret-admin-jwt" },
+        # Strapi app keys for session middleware (comma-separated)
+        { name = "APP_KEYS", value = "key1,key2,key3" },
+        # Admin API / transfer / encryption secrets (change to strong, unique values)
+        { name = "API_TOKEN_SALT", value = "change-me-api-salt-123" },
+        { name = "TRANSFER_TOKEN_SALT", value = "change-me-transfer-salt-456" },
+        { name = "ENCRYPTION_KEY", value = "change-me-encryption-key-789" }
       ]
-
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          awslogs-group         = "/ecs/strapi"
-          awslogs-region        = "eu-north-1"   # hardcoded if you don't want a variable
-          awslogs-stream-prefix = "ecs"
-        }
-      }
     }
   ])
 }

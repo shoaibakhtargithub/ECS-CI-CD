@@ -24,7 +24,7 @@ resource "aws_security_group" "ecs_sg" {
 }
 
 resource "aws_security_group" "rds_sg" {
-  name        = "shoaib-rds-sg"   # UPDATED
+  name        = "shoaib-rds-sg"
   description = "Allow DB access from Strapi EC2"
   vpc_id      = data.aws_vpc.default.id
 

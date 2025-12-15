@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "src/**"
+      -"terraform/**"
       - "Dockerfile"
       - ".github/workflows/ci.yml"
     branches: [ main ]
