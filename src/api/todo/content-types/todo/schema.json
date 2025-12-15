@@ -16,7 +16,7 @@
     },
     "completed": {
       "type": "boolean",
-      "default": false
+      "default": false 
     }
   }
 }

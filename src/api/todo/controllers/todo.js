@@ -6,5 +6,5 @@
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
-//exorting 
+//exorting from here
 module.exports = createCoreController('api::todo.todo');
