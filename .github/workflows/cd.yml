@@ -29,7 +29,7 @@ permissions:
 
 jobs:
   deploy:
-    # 🔐 Condition:
+    #  Condition:
     # - Allow if triggered by push/workflow_dispatch
     # - Allow workflow_run ONLY if CI succeeded
     if: |
