@@ -4,7 +4,7 @@ resource "aws_cloudwatch_log_group" "strapi" {
 }
 
 resource "aws_cloudwatch_dashboard" "strapi_dashboard" {
-  dashboard_name = "strapi-dashboard"
+  dashboard_name = "strapi-shoaib-dashboard"
 
   dashboard_body = jsonencode({
     widgets = [
