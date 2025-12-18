@@ -8,6 +8,15 @@ resource "aws_ecs_service" "this" {
   network_configuration {
     subnets          = data.aws_subnets.default_vpc_subnets.ids
     security_groups  = [aws_security_group.ecs_sg.id]
-    assign_public_ip = true
+    assign_public_ip = false
   }
+
+  load_balancer {
+  target_group_arn = aws_lb_target_group.strapi_tg.arn
+  container_name   = "strapi"
+  container_port   = 1337
+}
+
+depends_on = [aws_lb_listener.http]
+
 }

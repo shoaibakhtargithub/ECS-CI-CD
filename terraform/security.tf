@@ -3,13 +3,13 @@ resource "aws_security_group" "ecs_sg" {
   description = "Allow Strapi traffic to ECS tasks"
   vpc_id      = data.aws_vpc.default.id
 
-  ingress {
-    description = "Strapi HTTP"
-    from_port   = 1337
-    to_port     = 1337
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # OK for now (demo)
-  }
+ingress {
+  from_port       = 1337
+  to_port         = 1337
+  protocol        = "tcp"
+  security_groups = [aws_security_group.alb_sg.id]
+}
+
 
   egress {
     from_port   = 0
@@ -49,3 +49,28 @@ resource "aws_security_group" "rds_sg" {
     Name = "shoaib-rds-sg"
   }
 }
+
+resource "aws_security_group" "alb_sg" {
+  name        = "strapi-alb-sg"
+  description = "Allow HTTP traffic to ALB"
+  vpc_id      = data.aws_vpc.default.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "strapi-alb-sg"
+  }
+}
+
