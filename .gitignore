@@ -144,3 +144,5 @@ override.tf.json
 
 # Ignore plan output
 *.plan
+
+terraform_env.sh
