@@ -3,7 +3,7 @@ resource "aws_ecs_service" "this" {
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = 1
-
+  force_new_deployment = true
   deployment_controller {
     type = "CODE_DEPLOY"
   }
