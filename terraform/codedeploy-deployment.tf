@@ -3,7 +3,7 @@ resource "aws_codedeploy_deployment_group" "ecs" {
   deployment_group_name = "strapi-dg"
   service_role_arn      = aws_iam_role.codedeploy.arn
 
-  # 🔴 REQUIRED FOR ECS
+  
   deployment_style {
     deployment_type   = "BLUE_GREEN"
     deployment_option = "WITH_TRAFFIC_CONTROL"
@@ -16,7 +16,7 @@ resource "aws_codedeploy_deployment_group" "ecs" {
     events  = ["DEPLOYMENT_FAILURE"]
   }
 
-  # 🔴 REQUIRED FOR ECS BLUE/GREEN
+  
   blue_green_deployment_config {
     deployment_ready_option {
       action_on_timeout = "CONTINUE_DEPLOYMENT"

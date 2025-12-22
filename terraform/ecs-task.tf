@@ -10,6 +10,7 @@ resource "aws_ecs_task_definition" "this" {
 
   container_definitions = jsonencode([
     {
+      
       name      = "strapi"
       image     = "301782007642.dkr.ecr.eu-north-1.amazonaws.com/shoaib-strapi-image:latest"
 
