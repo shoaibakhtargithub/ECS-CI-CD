@@ -11,7 +11,7 @@ resource "aws_ecs_task_definition" "this" {
   container_definitions = jsonencode([
     {
       name      = "strapi"
-      image     = var.image_uri
+      image     = "ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/strapi:latest"
       essential = true
 
       portMappings = [
@@ -34,6 +34,14 @@ resource "aws_ecs_task_definition" "this" {
         { name = "TRANSFER_TOKEN_SALT", value = "change-me-transfer-salt-456" },
         { name = "ENCRYPTION_KEY", value = "change-me-encryption-key-789" }
       ]
+
+      healthCheck = {
+        command     = ["CMD-SHELL", "curl -f http://localhost:1337/admin || exit 1"]
+        interval    = 30
+        timeout     = 5
+        retries     = 3
+        startPeriod = 60
+      }
 
       logConfiguration = {
         logDriver = "awslogs"
