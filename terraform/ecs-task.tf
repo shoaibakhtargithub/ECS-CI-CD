@@ -10,10 +10,8 @@ resource "aws_ecs_task_definition" "this" {
 
   container_definitions = jsonencode([
     {
-      
       name      = "strapi"
       image     = "301782007642.dkr.ecr.eu-north-1.amazonaws.com/shoaib-strapi-image:latest"
-
       essential = true
 
       portMappings = [
@@ -24,25 +22,25 @@ resource "aws_ecs_task_definition" "this" {
       ]
 
       environment = [
-        { name = "DATABASE_CLIENT", value = "postgres" },
-        { name = "DATABASE_HOST", value = aws_db_instance.strapi_db.address },
-        { name = "DATABASE_PORT", value = "5432" },
-        { name = "DATABASE_NAME", value = var.db_name },
-        { name = "DATABASE_USERNAME", value = var.db_username },
-        { name = "DATABASE_PASSWORD", value = var.db_password },
-        { name = "ADMIN_JWT_SECRET", value = "changeme-super-secret-admin-jwt" },
-        { name = "APP_KEYS", value = "key1,key2,key3" },
-        { name = "API_TOKEN_SALT", value = "change-me-api-salt-123" },
+        { name = "DATABASE_CLIENT",     value = "postgres" },
+        { name = "DATABASE_HOST",       value = aws_db_instance.strapi_db.address },
+        { name = "DATABASE_PORT",       value = "5432" },
+        { name = "DATABASE_NAME",       value = var.db_name },
+        { name = "DATABASE_USERNAME",   value = var.db_username },
+        { name = "DATABASE_PASSWORD",   value = var.db_password },
+        { name = "ADMIN_JWT_SECRET",    value = "changeme-super-secret-admin-jwt" },
+        { name = "APP_KEYS",            value = "key1,key2,key3" },
+        { name = "API_TOKEN_SALT",      value = "change-me-api-salt-123" },
         { name = "TRANSFER_TOKEN_SALT", value = "change-me-transfer-salt-456" },
-        { name = "ENCRYPTION_KEY", value = "change-me-encryption-key-789" }
+        { name = "ENCRYPTION_KEY",      value = "change-me-encryption-key-789" }
       ]
 
       healthCheck = {
-        command     = ["CMD-SHELL", "curl -f http://localhost:1337/admin || exit 1"]
+        command     = ["CMD-SHELL", "curl -f http://localhost:1337/ || exit 1"]
         interval    = 30
         timeout     = 5
-        retries     = 3
-        startPeriod = 60
+        retries     = 5
+        startPeriod = 180
       }
 
       logConfiguration = {
@@ -56,3 +54,4 @@ resource "aws_ecs_task_definition" "this" {
     }
   ])
 }
+
