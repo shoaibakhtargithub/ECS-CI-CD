@@ -3,7 +3,7 @@ resource "aws_ecs_service" "this" {
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = 1
-  force_new_deployment = true
+
   deployment_controller {
     type = "CODE_DEPLOY"
   }
@@ -18,6 +18,13 @@ resource "aws_ecs_service" "this" {
     target_group_arn = aws_lb_target_group.strapi_blue.arn
     container_name   = "strapi"
     container_port   = 1337
+  }
+
+  lifecycle {
+    ignore_changes = [
+      task_definition,
+      capacity_provider_strategy
+    ]
   }
 
   depends_on = [aws_lb_listener.http]
