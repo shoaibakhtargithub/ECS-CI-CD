@@ -15,13 +15,14 @@ resource "aws_lb_target_group" "strapi_blue" {
   target_type = "ip"
 
   health_check {
-    path                = "/"
-    matcher             = "200"
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 3
-  }
+  path                = "/"
+  matcher             = "200-399"
+  interval            = 30
+  timeout             = 10
+  healthy_threshold   = 2
+  unhealthy_threshold = 5
+}
+
 }
 
 resource "aws_lb_target_group" "strapi_green" {
@@ -31,14 +32,15 @@ resource "aws_lb_target_group" "strapi_green" {
   vpc_id      = data.aws_vpc.default.id
   target_type = "ip"
 
-  health_check {
-    path                = "/"
-    matcher             = "200"
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 3
-  }
+health_check {
+  path                = "/"
+  matcher             = "200-399"
+  interval            = 30
+  timeout             = 10
+  healthy_threshold   = 2
+  unhealthy_threshold = 5
+}
+
 }
 
 

@@ -35,13 +35,6 @@ resource "aws_ecs_task_definition" "this" {
         { name = "ENCRYPTION_KEY",      value = "change-me-encryption-key-789" }
       ]
 
-      healthCheck = {
-        command     = ["CMD-SHELL", "curl -f http://localhost:1337/ || exit 1"]
-        interval    = 30
-        timeout     = 5
-        retries     = 5
-        startPeriod = 180
-      }
 
       logConfiguration = {
         logDriver = "awslogs"
