@@ -1,7 +1,7 @@
 {
   "version": 4,
   "terraform_version": "1.12.2",
-  "serial": 144,
+  "serial": 139,
   "lineage": "6bac5c1e-9601-3448-b09f-d53f313199c4",
   "outputs": {
     "rds_endpoint": {
@@ -619,8 +619,8 @@
                 "prefix": ""
               }
             ],
-            "arn": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:loadbalancer/app/strapi-shoaib-alb/f17fffdf94789027",
-            "arn_suffix": "app/strapi-shoaib-alb/f17fffdf94789027",
+            "arn": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:loadbalancer/app/strapi-shoaib-alb/e7ace88bc58c538e",
+            "arn_suffix": "app/strapi-shoaib-alb/e7ace88bc58c538e",
             "client_keep_alive": 3600,
             "connection_logs": [
               {
@@ -631,7 +631,7 @@
             ],
             "customer_owned_ipv4_pool": "",
             "desync_mitigation_mode": "defensive",
-            "dns_name": "strapi-shoaib-alb-1072704519.eu-north-1.elb.amazonaws.com",
+            "dns_name": "strapi-shoaib-alb-1154498714.eu-north-1.elb.amazonaws.com",
             "dns_record_client_routing_policy": null,
             "drop_invalid_header_fields": false,
             "enable_cross_zone_load_balancing": true,
@@ -649,7 +649,7 @@
                 "prefix": ""
               }
             ],
-            "id": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:loadbalancer/app/strapi-shoaib-alb/f17fffdf94789027",
+            "id": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:loadbalancer/app/strapi-shoaib-alb/e7ace88bc58c538e",
             "idle_timeout": 60,
             "internal": false,
             "ip_address_type": "ipv4",
@@ -702,266 +702,9 @@
           "sensitive_attributes": [],
           "identity_schema_version": 0,
           "identity": {
-            "arn": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:loadbalancer/app/strapi-shoaib-alb/f17fffdf94789027"
+            "arn": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:loadbalancer/app/strapi-shoaib-alb/e7ace88bc58c538e"
           },
           "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMCJ9"
-        }
-      ]
-    },
-    {
-      "mode": "managed",
-      "type": "aws_lb_listener",
-      "name": "http",
-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
-      "instances": [
-        {
-          "schema_version": 0,
-          "attributes": {
-            "alpn_policy": null,
-            "arn": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:listener/app/strapi-shoaib-alb/f17fffdf94789027/092b4fbe358de706",
-            "certificate_arn": null,
-            "default_action": [
-              {
-                "authenticate_cognito": [],
-                "authenticate_oidc": [],
-                "fixed_response": [
-                  {
-                    "content_type": "text/plain",
-                    "message_body": "Deployment in progress",
-                    "status_code": "200"
-                  }
-                ],
-                "forward": [],
-                "jwt_validation": [],
-                "order": 1,
-                "redirect": [],
-                "target_group_arn": "",
-                "type": "fixed-response"
-              }
-            ],
-            "id": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:listener/app/strapi-shoaib-alb/f17fffdf94789027/092b4fbe358de706",
-            "load_balancer_arn": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:loadbalancer/app/strapi-shoaib-alb/f17fffdf94789027",
-            "mutual_authentication": [],
-            "port": 80,
-            "protocol": "HTTP",
-            "region": "eu-north-1",
-            "routing_http_request_x_amzn_mtls_clientcert_header_name": null,
-            "routing_http_request_x_amzn_mtls_clientcert_issuer_header_name": null,
-            "routing_http_request_x_amzn_mtls_clientcert_leaf_header_name": null,
-            "routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name": null,
-            "routing_http_request_x_amzn_mtls_clientcert_subject_header_name": null,
-            "routing_http_request_x_amzn_mtls_clientcert_validity_header_name": null,
-            "routing_http_request_x_amzn_tls_cipher_suite_header_name": null,
-            "routing_http_request_x_amzn_tls_version_header_name": null,
-            "routing_http_response_access_control_allow_credentials_header_value": "",
-            "routing_http_response_access_control_allow_headers_header_value": "",
-            "routing_http_response_access_control_allow_methods_header_value": "",
-            "routing_http_response_access_control_allow_origin_header_value": "",
-            "routing_http_response_access_control_expose_headers_header_value": "",
-            "routing_http_response_access_control_max_age_header_value": "",
-            "routing_http_response_content_security_policy_header_value": "",
-            "routing_http_response_server_enabled": true,
-            "routing_http_response_strict_transport_security_header_value": "",
-            "routing_http_response_x_content_type_options_header_value": "",
-            "routing_http_response_x_frame_options_header_value": "",
-            "ssl_policy": "",
-            "tags": {},
-            "tags_all": {},
-            "tcp_idle_timeout_seconds": null,
-            "timeouts": null
-          },
-          "sensitive_attributes": [],
-          "identity_schema_version": 0,
-          "identity": {
-            "arn": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:listener/app/strapi-shoaib-alb/f17fffdf94789027/092b4fbe358de706"
-          },
-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsInVwZGF0ZSI6MzAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIwIn0="
-        }
-      ]
-    },
-    {
-      "mode": "managed",
-      "type": "aws_lb_target_group",
-      "name": "strapi_blue",
-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
-      "instances": [
-        {
-          "schema_version": 0,
-          "attributes": {
-            "arn": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:targetgroup/strapi-blue-tg/c820787e46111cc5",
-            "arn_suffix": "targetgroup/strapi-blue-tg/c820787e46111cc5",
-            "connection_termination": null,
-            "deregistration_delay": "300",
-            "health_check": [
-              {
-                "enabled": true,
-                "healthy_threshold": 3,
-                "interval": 30,
-                "matcher": "200",
-                "path": "/admin",
-                "port": "traffic-port",
-                "protocol": "HTTP",
-                "timeout": 5,
-                "unhealthy_threshold": 3
-              }
-            ],
-            "id": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:targetgroup/strapi-blue-tg/c820787e46111cc5",
-            "ip_address_type": "ipv4",
-            "lambda_multi_value_headers_enabled": null,
-            "load_balancer_arns": [],
-            "load_balancing_algorithm_type": "round_robin",
-            "load_balancing_anomaly_mitigation": "off",
-            "load_balancing_cross_zone_enabled": "use_load_balancer_configuration",
-            "name": "strapi-blue-tg",
-            "name_prefix": "",
-            "port": 1337,
-            "preserve_client_ip": null,
-            "protocol": "HTTP",
-            "protocol_version": "HTTP1",
-            "proxy_protocol_v2": null,
-            "region": "eu-north-1",
-            "slow_start": 0,
-            "stickiness": [
-              {
-                "cookie_duration": 86400,
-                "cookie_name": "",
-                "enabled": false,
-                "type": "lb_cookie"
-              }
-            ],
-            "tags": {},
-            "tags_all": {},
-            "target_control_port": 0,
-            "target_failover": [
-              {
-                "on_deregistration": null,
-                "on_unhealthy": null
-              }
-            ],
-            "target_group_health": [
-              {
-                "dns_failover": [
-                  {
-                    "minimum_healthy_targets_count": "1",
-                    "minimum_healthy_targets_percentage": "off"
-                  }
-                ],
-                "unhealthy_state_routing": [
-                  {
-                    "minimum_healthy_targets_count": 1,
-                    "minimum_healthy_targets_percentage": "off"
-                  }
-                ]
-              }
-            ],
-            "target_health_state": [
-              {
-                "enable_unhealthy_connection_termination": null,
-                "unhealthy_draining_interval": null
-              }
-            ],
-            "target_type": "ip",
-            "vpc_id": "vpc-04440c702204c8a92"
-          },
-          "sensitive_attributes": [],
-          "identity_schema_version": 0,
-          "identity": {
-            "arn": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:targetgroup/strapi-blue-tg/c820787e46111cc5"
-          },
-          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjAifQ=="
-        }
-      ]
-    },
-    {
-      "mode": "managed",
-      "type": "aws_lb_target_group",
-      "name": "strapi_green",
-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
-      "instances": [
-        {
-          "schema_version": 0,
-          "attributes": {
-            "arn": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:targetgroup/strapi-green-tg/88411258647a4cb0",
-            "arn_suffix": "targetgroup/strapi-green-tg/88411258647a4cb0",
-            "connection_termination": null,
-            "deregistration_delay": "300",
-            "health_check": [
-              {
-                "enabled": true,
-                "healthy_threshold": 3,
-                "interval": 30,
-                "matcher": "200",
-                "path": "/admin",
-                "port": "traffic-port",
-                "protocol": "HTTP",
-                "timeout": 5,
-                "unhealthy_threshold": 3
-              }
-            ],
-            "id": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:targetgroup/strapi-green-tg/88411258647a4cb0",
-            "ip_address_type": "ipv4",
-            "lambda_multi_value_headers_enabled": null,
-            "load_balancer_arns": [],
-            "load_balancing_algorithm_type": "round_robin",
-            "load_balancing_anomaly_mitigation": "off",
-            "load_balancing_cross_zone_enabled": "use_load_balancer_configuration",
-            "name": "strapi-green-tg",
-            "name_prefix": "",
-            "port": 1337,
-            "preserve_client_ip": null,
-            "protocol": "HTTP",
-            "protocol_version": "HTTP1",
-            "proxy_protocol_v2": null,
-            "region": "eu-north-1",
-            "slow_start": 0,
-            "stickiness": [
-              {
-                "cookie_duration": 86400,
-                "cookie_name": "",
-                "enabled": false,
-                "type": "lb_cookie"
-              }
-            ],
-            "tags": {},
-            "tags_all": {},
-            "target_control_port": 0,
-            "target_failover": [
-              {
-                "on_deregistration": null,
-                "on_unhealthy": null
-              }
-            ],
-            "target_group_health": [
-              {
-                "dns_failover": [
-                  {
-                    "minimum_healthy_targets_count": "1",
-                    "minimum_healthy_targets_percentage": "off"
-                  }
-                ],
-                "unhealthy_state_routing": [
-                  {
-                    "minimum_healthy_targets_count": 1,
-                    "minimum_healthy_targets_percentage": "off"
-                  }
-                ]
-              }
-            ],
-            "target_health_state": [
-              {
-                "enable_unhealthy_connection_termination": null,
-                "unhealthy_draining_interval": null
-              }
-            ],
-            "target_type": "ip",
-            "vpc_id": "vpc-04440c702204c8a92"
-          },
-          "sensitive_attributes": [],
-          "identity_schema_version": 0,
-          "identity": {
-            "arn": "arn:aws:elasticloadbalancing:eu-north-1:301782007642:targetgroup/strapi-green-tg/88411258647a4cb0"
-          },
-          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjAifQ=="
         }
       ]
     },
