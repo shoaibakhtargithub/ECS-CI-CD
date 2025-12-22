@@ -1,7 +1,8 @@
 resource "aws_ecs_service" "this" {
-  name          = "strapi-service"
-  cluster       = aws_ecs_cluster.this.id
-  desired_count = 1
+  name            = "strapi-service"
+  cluster         = aws_ecs_cluster.this.id
+  task_definition = aws_ecs_task_definition.this.arn   
+  desired_count   = 1
 
   deployment_controller {
     type = "CODE_DEPLOY"
@@ -15,3 +16,4 @@ resource "aws_ecs_service" "this" {
 
   depends_on = [aws_lb_listener.http]
 }
+
