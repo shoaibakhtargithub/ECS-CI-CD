@@ -44,6 +44,7 @@ resource "aws_codedeploy_deployment_group" "ecs" {
       }
 
       target_group {
+        
         name = aws_lb_target_group.strapi_green.name
       }
     }
