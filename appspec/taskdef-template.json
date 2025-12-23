@@ -4,8 +4,9 @@
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "512",
   "memory": "1024",
-  "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/ecsTaskExecutionRole-strapi",
-  "taskRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/ecsTaskRole-strapi",
+  "executionRoleArn": "arn:aws:iam::301782007642:role/ecsTaskExecutionRole-strapi",
+  "taskRoleArn": "arn:aws:iam::301782007642:role/ecsTaskRole-strapi",
+
   "containerDefinitions": [
     {
       "name": "strapi",
@@ -30,3 +31,4 @@
     }
   ]
 }
+
