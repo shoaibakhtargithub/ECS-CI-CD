@@ -16,12 +16,13 @@ resource "aws_lb_target_group" "strapi_blue" {
 
 health_check {
   path                = "/admin"
-  matcher             = "200"
+  matcher             = "200-399"
   interval            = 30
   timeout             = 10
   healthy_threshold   = 2
   unhealthy_threshold = 5
 }
+
 
 
 }
@@ -35,12 +36,13 @@ resource "aws_lb_target_group" "strapi_green" {
 
 health_check {
   path                = "/admin"
-  matcher             = "200"
+  matcher             = "200-399"
   interval            = 30
   timeout             = 10
   healthy_threshold   = 2
   unhealthy_threshold = 5
 }
+
 
 
 }
