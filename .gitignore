@@ -146,3 +146,4 @@ override.tf.json
 *.plan
 
 terraform_env.sh
+terraform import aws_lb.strapi_alb arn:aws:elasticloadbalancing:eu-north-1:301782007642:loadbalancer/app/strapi-shoaib-alb/e7ace88bc58c538e
