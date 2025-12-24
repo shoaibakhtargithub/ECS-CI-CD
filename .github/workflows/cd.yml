@@ -16,9 +16,8 @@ on:
   workflow_dispatch:
 
 env:
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-  ECR_REPOSITORY: shoaib-strapi-image
+  AWS_REGION: eu-north-1
+  IMAGE_URI: 301782007642.dkr.ecr.eu-north-1.amazonaws.com/shoaib-strapi-image:latest
   CODEDEPLOY_APP: strapi-ecs-app-shoaib
   CODEDEPLOY_DG: strapi-dg
 
@@ -35,19 +34,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    
+     
       - name: Checkout repo
         uses: actions/checkout@v4
 
-     
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: eu-north-1
 
-      
+     
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
@@ -56,27 +54,35 @@ jobs:
         working-directory: terraform
         run: terraform init
 
-     
+      
       - name: Terraform Plan
         working-directory: terraform
-        run: terraform plan
+        run: |
+          terraform plan \
+            -input=false \
+            -var="image_uri=${IMAGE_URI}"
 
-     
+    
       - name: Terraform Apply
         working-directory: terraform
-        run: terraform apply -auto-approve
+        run: |
+          terraform apply -auto-approve \
+            -input=false \
+            -var="image_uri=${IMAGE_URI}"
 
+      
       - name: Prepare task definition
         run: |
-          sed "s|IMAGE_URI|${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest|g" \
+          sed "s|IMAGE_URI|${IMAGE_URI}|g" \
           appspec/taskdef-template.json > taskdef.json
 
-     
+    
       - name: Register ECS task definition
         run: |
           aws ecs register-task-definition \
             --cli-input-json file://taskdef.json
 
+      
       - name: Create CodeDeploy deployment
         run: |
           APPSPEC_CONTENT=$(sed 's/"/\\"/g' appspec/appspec.yml | tr '\n' '\\n')
@@ -89,5 +95,5 @@ jobs:
             --application-name $CODEDEPLOY_APP \
             --deployment-group-name $CODEDEPLOY_DG \
             --revision "$(cat revision-final.json)" \
-            --region $AWS_REGION
+            --region eu-north-1
 
