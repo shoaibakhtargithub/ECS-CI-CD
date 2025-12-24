@@ -34,7 +34,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-     
       - name: Checkout repo
         uses: actions/checkout@v4
 
@@ -45,16 +44,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-north-1
 
-     
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      
       - name: Terraform Init
         working-directory: terraform
         run: terraform init
 
-      
       - name: Terraform Plan
         working-directory: terraform
         run: |
@@ -62,7 +58,6 @@ jobs:
             -input=false \
             -var="image_uri=${IMAGE_URI}"
 
-    
       - name: Terraform Apply
         working-directory: terraform
         run: |
@@ -70,30 +65,21 @@ jobs:
             -input=false \
             -var="image_uri=${IMAGE_URI}"
 
-      
       - name: Prepare task definition
         run: |
           sed "s|IMAGE_URI|${IMAGE_URI}|g" \
           appspec/taskdef-template.json > taskdef.json
 
-    
       - name: Register ECS task definition
         run: |
           aws ecs register-task-definition \
             --cli-input-json file://taskdef.json
 
-      
       - name: Create CodeDeploy deployment
         run: |
-          APPSPEC_CONTENT=$(sed 's/"/\\"/g' appspec/appspec.yml | tr '\n' '\\n')
-
-          jq --arg content "$APPSPEC_CONTENT" \
-            '.appSpecContent.content = $content' \
-            revision.json > revision-final.json
-
           aws deploy create-deployment \
             --application-name $CODEDEPLOY_APP \
             --deployment-group-name $CODEDEPLOY_DG \
-            --revision "$(cat revision-final.json)" \
+            --revision revisionType=AppSpecContent,appSpecContent="{content=$(cat appspec/appspec.yml)}" \
             --region eu-north-1
 
