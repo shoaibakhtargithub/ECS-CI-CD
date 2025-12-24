@@ -1,11 +1,13 @@
 name: CD - Deploy to ECS using Terraform
 
 on:
+  # Automatically run after CI workflow finishes successfully
   workflow_run:
     workflows: ["CI - Build & Push Strapi Image to ECR"]
     types:
       - completed
 
+  # Allow manual or infra‑level deployments
   push:
     branches:
       - main
@@ -17,7 +19,8 @@ on:
 
 env:
   AWS_REGION: eu-north-1
-  IMAGE_URI: 301782007642.dkr.ecr.eu-north-1.amazonaws.com/shoaib-strapi-image:latest
+  AWS_ACCOUNT_ID: "301782007642"
+  ECR_REPOSITORY: shoaib-strapi-image
   CODEDEPLOY_APP: strapi-ecs-app-shoaib
   CODEDEPLOY_DG: strapi-dg
 
@@ -42,7 +45,27 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Determine which image tag to deploy:
+      # - For workflow_run: use the SHA of the CI workflow's commit (pre‑built image)
+      # - For direct push / manual run: fall back to this workflow's commit SHA
+      - name: Resolve image tag and URI
+        id: vars
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          WORKFLOW_RUN_SHA: ${{ github.event.workflow_run.head_sha || '' }}
+        run: |
+          if [ -n "$WORKFLOW_RUN_SHA" ]; then
+            IMAGE_TAG="$WORKFLOW_RUN_SHA"
+          else
+            IMAGE_TAG="$GITHUB_SHA"
+          fi
+
+          IMAGE_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}"
+
+          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+          echo "image_uri=$IMAGE_URI" >> "$GITHUB_OUTPUT"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -53,6 +76,8 @@ jobs:
 
       - name: Terraform Plan
         working-directory: terraform
+        env:
+          IMAGE_URI: ${{ steps.vars.outputs.image_uri }}
         run: |
           terraform plan \
             -input=false \
@@ -60,26 +85,64 @@ jobs:
 
       - name: Terraform Apply
         working-directory: terraform
+        env:
+          IMAGE_URI: ${{ steps.vars.outputs.image_uri }}
         run: |
           terraform apply -auto-approve \
             -input=false \
             -var="image_uri=${IMAGE_URI}"
 
-      - name: Prepare task definition
+      - name: Prepare task definition JSON with image tag
+        env:
+          IMAGE_URI: ${{ steps.vars.outputs.image_uri }}
         run: |
           sed "s|IMAGE_URI|${IMAGE_URI}|g" \
-          appspec/taskdef-template.json > taskdef.json
+            appspec/taskdef-template.json > taskdef.json
 
-      - name: Register ECS task definition
+      - name: Register ECS task definition and capture ARN
+        id: register_taskdef
         run: |
-          aws ecs register-task-definition \
-            --cli-input-json file://taskdef.json
+          TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://taskdef.json \
+            --query "taskDefinition.taskDefinitionArn" \
+            --output text)
+
+          echo "task_def_arn=$TASK_DEF_ARN" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare AppSpec with new task definition ARN
+        env:
+          TASK_DEF_ARN: ${{ steps.register_taskdef.outputs.task_def_arn }}
+        run: |
+          sed "s|TASK_DEF_ARN|${TASK_DEF_ARN}|g" \
+            appspec/appspec.yml > appspec/appspec-resolved.yml
 
       - name: Create CodeDeploy deployment
+        id: create_deployment
         run: |
-          aws deploy create-deployment \
-            --application-name $CODEDEPLOY_APP \
-            --deployment-group-name $CODEDEPLOY_DG \
-            --revision revisionType=AppSpecContent,appSpecContent="{content=$(cat appspec/appspec.yml)}" \
-            --region eu-north-1
+          DEPLOYMENT_ID=$(aws deploy create-deployment \
+            --application-name "$CODEDEPLOY_APP" \
+            --deployment-group-name "$CODEDEPLOY_DG" \
+            --revision revisionType=AppSpecContent,appSpecContent="{content=$(cat appspec/appspec-resolved.yml)}" \
+            --region "$AWS_REGION" \
+            --query "deploymentId" \
+            --output text)
+
+          echo "deployment_id=$DEPLOYMENT_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for deployment to complete (with rollback on failure)
+        env:
+          DEPLOYMENT_ID: ${{ steps.create_deployment.outputs.deployment_id }}
+        run: |
+          echo "Waiting for deployment $DEPLOYMENT_ID to finish..."
+          set +e
+          aws deploy wait deployment-successful \
+            --deployment-id "$DEPLOYMENT_ID" \
+            --region "$AWS_REGION"
+          STATUS=$?
+          set -e
+
+          if [ "$STATUS" -ne 0 ]; then
+            echo "Deployment failed. Auto-rollback is enabled in CodeDeploy deployment group."
+            exit 1
+          fi
 

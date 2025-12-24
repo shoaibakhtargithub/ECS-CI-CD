@@ -10,7 +10,7 @@
   "containerDefinitions": [
     {
       "name": "strapi",
-      "image": "301782007642.dkr.ecr.eu-north-1.amazonaws.com/shoaib-strapi-image:latest",
+      "image": "IMAGE_URI",
       "essential": true,
       "portMappings": [
         {

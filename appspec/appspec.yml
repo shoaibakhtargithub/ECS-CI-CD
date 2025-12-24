@@ -3,7 +3,9 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: arn:aws:ecs:eu-north-1:301782007642:task-definition/strapi-task:37
+        # This placeholder is dynamically replaced in the CD workflow with the
+        # freshly registered task definition ARN for the commit being deployed.
+        TaskDefinition: TASK_DEF_ARN
         LoadBalancerInfo:
           ContainerName: strapi
           ContainerPort: 1337
