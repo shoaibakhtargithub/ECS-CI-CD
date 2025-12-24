@@ -57,9 +57,16 @@ jobs:
 
       - name: Create CodeDeploy deployment
         run: |
+          APPSPEC_CONTENT=$(sed 's/"/\\"/g' appspec/appspec.yml | tr '\n' '\\n')
+
+          jq --arg content "$APPSPEC_CONTENT" \
+            '.appSpecContent.content = $content' \
+            revision.json > revision-final.json
+
           aws deploy create-deployment \
             --application-name $CODEDEPLOY_APP \
             --deployment-group-name $CODEDEPLOY_DG \
-            --revision revisionType=AppSpecContent,appSpecContent=file://appspec/appspec.yml \
+            --revision "$(cat revision-final.json)" \
             --region $AWS_REGION
+
 
